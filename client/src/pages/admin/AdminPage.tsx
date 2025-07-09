@@ -1,8 +1,8 @@
-import {Box, Typography} from "@mui/material";
-import type {ReactNode} from "react";
+import {Box} from "@mui/material";
+import type {JSX} from "react";
 
 
-function AdminPage(): ReactNode{
+function AdminPage(): JSX.Element{
     return (
         <Box></Box>
     )

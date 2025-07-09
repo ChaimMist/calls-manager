@@ -1,11 +1,10 @@
 import type {NavItemProps} from "./navItemProps.ts";
 import {Box, Typography} from "@mui/material";
 import {NavLink} from "react-router";
-import type {ReactNode} from "react";
+import type {JSX} from "react";
 import {useLocation} from "react-router";
 
-
-function NavItem({label, path}: NavItemProps): ReactNode {
+function NavItem({label, path}: NavItemProps): JSX.Element {
     const location = useLocation();
     const isSelected: boolean = location.pathname === path;
 

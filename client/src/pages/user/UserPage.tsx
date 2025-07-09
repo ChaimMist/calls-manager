@@ -1,7 +1,7 @@
 import {Box} from "@mui/material";
-import type {ReactNode} from "react";
+import type {JSX} from "react";
 
-function UserPage(): ReactNode{
+function UserPage(): JSX.Element{
     return (
         <Box>
 
