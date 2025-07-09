@@ -1,6 +1,7 @@
 import type {EditSuggestionPopupProps} from "./editSuggestionPopupProps.ts";
 import {Box, Button, FormControl, TextField, Typography} from "@mui/material";
 import React, {useCallback} from "react";
+import {toast} from "react-toastify";
 
 export default function EditSuggestionPopup({suggestion}: EditSuggestionPopupProps) {
 
@@ -9,16 +10,17 @@ export default function EditSuggestionPopup({suggestion}: EditSuggestionPopupPro
         const newName = new FormData(event.currentTarget).get('suggestionName') as string;
         console.log(`Renaming suggestion from ${suggestion.name} to: ${newName}`);
         if (!newName || newName.trim() === '') {
-            alert('Suggestion name cannot be empty');
+            toast.error('Suggestion name cannot be empty');
         } else {
             event.currentTarget.reset();
+            toast.success(`Suggestion renamed to ${newName} successfully`);
             console.log(`Renaming suggestion from ${suggestion.name} to: ${newName}`);
         }
     }, [suggestion.name]);
 
     const handleDeleteSuggestion = useCallback((): void => {
         console.log(`Deleting suggestion: ${suggestion.name}`);
-        alert(`Suggestion ${suggestion.name} deleted successfully`);
+        toast.success(`Suggestion ${suggestion.name} deleted successfully`);
     }, [suggestion.name]);
 
     return (

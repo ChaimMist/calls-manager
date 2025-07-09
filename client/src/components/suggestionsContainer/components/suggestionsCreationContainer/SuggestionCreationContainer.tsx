@@ -51,8 +51,8 @@ export default function SuggestionCreationContainer(): JSX.Element {
                 </Box>
             </FormControl>
             <Box display={'flex'} flexDirection={'row'} gap={1} flexWrap={'wrap'} alignItems={'center'}>
-                {tags.map((tag: Tag, index: number) => (
-                    <Chip key={index} variant={'outlined'} color={'primary'} label={tag.name}/>
+                {tags.map((tag: Tag) => (
+                    <Chip key={tag.id} variant={'outlined'} color={'primary'} label={tag.name}/>
                 ))}
                 <CustomPopover id={'suggestionCreationEditPopup'} icon={<AddIcon/>}>
                     <TagsPopup onSaveTags={handleSaveTags} selectedTags={tags}/>

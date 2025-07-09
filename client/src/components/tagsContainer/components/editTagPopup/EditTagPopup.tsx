@@ -3,7 +3,6 @@ import React, {type JSX, useCallback} from "react";
 import {toast} from "react-toastify";
 import type {EditTagPopupProps} from "./editTagPopupProps.ts";
 
-
 export default function EditTagPopup({tag}: EditTagPopupProps): JSX.Element {
 
     const handleRenameTag = useCallback((event: React.FormEvent<HTMLFormElement>): void => {
@@ -14,6 +13,7 @@ export default function EditTagPopup({tag}: EditTagPopupProps): JSX.Element {
             toast.error('Tag name cannot be empty');
         } else {
             event.currentTarget.reset();
+            toast.success(`Tag renamed to ${newName} successfully`);
             console.log(`Renaming tag from ${tag.name} to: ${newName}`);
         }
     }, [tag.name]);
