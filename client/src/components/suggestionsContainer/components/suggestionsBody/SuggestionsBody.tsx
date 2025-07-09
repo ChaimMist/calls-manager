@@ -248,12 +248,11 @@ export default function SuggestionsBody(): JSX.Element {
             updatedAt: '2023-10-02T12:00:00Z'
         }
     ]
-
     return (
         <Box display={'flex'} overflow={'auto'} flexDirection={'column'} borderRadius={3} gap={2} bgcolor={'background.paper'} p={2}>
             {
                 suggestions.map((suggestion: SuggestionI, index: number) => {
-                    return <SuggestionItem key={index} name={suggestion.name} tags={suggestion.tags}/>
+                    return <SuggestionItem key={index} suggestion={suggestion}/>
                 })
             }
         </Box>

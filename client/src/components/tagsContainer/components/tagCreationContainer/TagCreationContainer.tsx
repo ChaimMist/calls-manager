@@ -5,7 +5,7 @@ export default function TagCreationContainer() {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
-        const tagName: string = new FormData(event.currentTarget).get('taskName') as string;
+        const tagName: string = new FormData(event.currentTarget).get('tagName') as string;
         if (!tagName || tagName.trim() === '') {
             toast.error('Tag name is required');
             return;

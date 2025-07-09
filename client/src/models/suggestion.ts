@@ -1,7 +1,7 @@
 import type {Tag} from "./tag.ts";
 
 export interface SuggestionI {
-    id?: string;
+    id: string;
     name: string;
     tags: Tag[];
     createdAt?: string;
