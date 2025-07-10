@@ -13,7 +13,7 @@ export default function TaskItem({task}: TaskItemProps) {
                 return 'error';
             case 'In Progress':
                 return 'warning';
-            case 'Complete':
+            case 'Completed':
                 return 'success';
             default:
                 return 'default';
@@ -59,7 +59,7 @@ export default function TaskItem({task}: TaskItemProps) {
                 >
                     <MenuItem value={'Open'}>Open</MenuItem>
                     <MenuItem value={'In Progress'}>In Progress</MenuItem>
-                    <MenuItem value={'Complete'}>Complete</MenuItem>
+                    <MenuItem value={'Completed'}>Completed</MenuItem>
                 </Select>
             </FormControl>
         </Box>

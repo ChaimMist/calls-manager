@@ -1,7 +1,7 @@
 import {Grid} from "@mui/material";
 import type {JSX} from "react";
 import CallsContainer from "../../components/callsContainer/CallsContainer.tsx";
-import CallInfoContainer from "../../components/callInfoContainer/CallInfoCotnainer.tsx";
+import CallInfoContainer from "../../components/callInfoContainer/CallInfoContainer.tsx";
 import {CallRecordsProvider} from "../../contexts/callRecordsContext.tsx";
 
 function UserPage(): JSX.Element {

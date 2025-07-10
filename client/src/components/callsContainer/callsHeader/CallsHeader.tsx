@@ -14,7 +14,7 @@ export default function CallsHeader() {
         } else {
             toast.success(`Call "${callName}" created successfully`);
             addCall({
-                id: callName,
+                id: crypto.randomUUID(),
                 name: callName,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
