@@ -1,10 +1,8 @@
-import {Box, Button, Chip, FormControl, TextField} from "@mui/material";
+import {Box, Button, FormControl, TextField} from "@mui/material";
 import React, {type JSX, useCallback} from "react";
 import {toast} from "react-toastify";
-import AddIcon from '@mui/icons-material/Add';
 import type {Tag} from "../../../../models/tag.ts";
-import CustomPopover from "../../../CustomPopover/CustomPopover.tsx";
-import TagsPopup from "../../../tagsPopup/TagsPopup.tsx";
+import TagsDisplay from "../../../tagsDisplay/TagsDisplay.tsx";
 
 export default function SuggestionCreationContainer(): JSX.Element {
     const tags: Tag[] = [
@@ -50,14 +48,7 @@ export default function SuggestionCreationContainer(): JSX.Element {
                     </Button>
                 </Box>
             </FormControl>
-            <Box display={'flex'} flexDirection={'row'} gap={1} flexWrap={'wrap'} alignItems={'center'}>
-                {tags.map((tag: Tag) => (
-                    <Chip key={tag.id} variant={'outlined'} color={'primary'} label={tag.name}/>
-                ))}
-                <CustomPopover id={'suggestionCreationEditPopup'} icon={<AddIcon/>}>
-                    <TagsPopup onSaveTags={handleSaveTags} selectedTags={tags}/>
-                </CustomPopover>
-            </Box>
+            <TagsDisplay tags={tags} onSaveTags={handleSaveTags} isEditable={true}/>
         </Box>
     );
 }

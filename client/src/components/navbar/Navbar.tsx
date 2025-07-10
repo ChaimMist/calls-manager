@@ -2,10 +2,9 @@ import {Box, Typography} from "@mui/material";
 import NavItem from "./components/navItem/NavItem.tsx";
 import type {JSX} from "react";
 
-
 function Navbar(): JSX.Element {
     return (
-        <Box p={2} px={4} boxShadow={3} height={60} display={'flex'} alignItems={'center'} gap={3}>
+        <Box bgcolor={'#c1d3fe'} p={2} px={4} boxShadow={3} height={60} display={'flex'} alignItems={'center'} gap={3}>
             <Typography variant={'h5'} fontWeight={'bold'} fontStyle={'italic'}>
                 Calls Manager
             </Typography>

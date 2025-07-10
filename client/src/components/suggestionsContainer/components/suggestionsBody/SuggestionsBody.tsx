@@ -23,8 +23,18 @@ export default function SuggestionsBody(): JSX.Element {
             updatedAt: '2023-10-01T12:00:00Z'
         },{
             id: '1',
-            name: 'Fix the bug in the login page',
+            name: 'Fix the bug in the login pageFix the bug in the login pageFix the bug in the ',
             tags: [{
+                id: '2',
+                name: 'urgent',
+                createdAt: '2023-10-01T12:00:00Z',
+                updatedAt: '2023-10-01T12:00:00Z'
+            },{
+                id: '2',
+                name: 'urgent',
+                createdAt: '2023-10-01T12:00:00Z',
+                updatedAt: '2023-10-01T12:00:00Z'
+            },{
                 id: '2',
                 name: 'urgent',
                 createdAt: '2023-10-01T12:00:00Z',
