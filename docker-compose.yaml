@@ -11,7 +11,10 @@ services:
     volumes:
       - ./db_data:/var/lib/postgresql/data
   client:
-    image: ./client.
+    build:
+      context: ./client
     volumes:
       - ./client:/app
       - /app/node_modules
+    ports:
+      - "5173:5173"
