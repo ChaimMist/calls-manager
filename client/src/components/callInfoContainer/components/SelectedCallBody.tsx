@@ -13,7 +13,7 @@ export default function SelectedCallBody() {
 
         if (!selectedCallRecord) return;
         addSelectedCallTask({
-            id: crypto.randomUUID(),
+            id: new Date().getTime().toString(),
             name: taskName,
             status: 'Open',
             createdAt: new Date().toISOString(),

@@ -14,13 +14,13 @@ export default function CallsHeader() {
         } else {
             toast.success(`Call "${callName}" created successfully`);
             addCall({
-                id: crypto.randomUUID(),
+                id: new Date().getTime().toString(),
                 name: callName,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
                 tasks: [],
                 tags: []
-            })
+            });
         }
     };
 
