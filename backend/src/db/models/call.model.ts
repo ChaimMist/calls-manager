@@ -1,8 +1,8 @@
-import { BelongsToMany, Column, CreatedAt, DataType, Model, Table, UpdatedAt } from 'sequelize-typescript';
-import { Tag } from '../tags/tag.model';
+import { BelongsToMany, Column, CreatedAt, DataType, HasMany, Model, Table, UpdatedAt } from 'sequelize-typescript';
+import { Tag } from './tag.model';
 import { CallTag } from './calls-tag.model';
-import { CallTask } from './calls-tasks.model';
-import { CreateCallDto } from './dto/create-call.dto';
+import { CreateCallDto } from '../dto/create-call.dto';
+import { Task } from './task.model';
 
 @Table
 export class Call extends Model<Call, CreateCallDto> {
@@ -27,7 +27,6 @@ export class Call extends Model<Call, CreateCallDto> {
   @BelongsToMany(()=> Tag, () => CallTag)
   tags: Tag[];
 
-  @BelongsToMany(() => Call, () => CallTask)
-  tasks: Call[];
-
+  @HasMany(() => Task)
+  tasks: Task[];
 }

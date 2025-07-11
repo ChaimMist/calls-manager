@@ -1,4 +1,6 @@
-import { Column, CreatedAt, DataType, Model, Table, UpdatedAt } from 'sequelize-typescript';
+import { BelongsToMany, Column, CreatedAt, DataType, Model, Table, UpdatedAt } from 'sequelize-typescript';
+import { SuggestedTasksTags } from './suggested-tasks-tags.model';
+import { SuggestedTask } from './suggested-task.model';
 
 
 @Table
@@ -20,4 +22,7 @@ export class Tag extends Model<Tag> {
   @UpdatedAt
   @Column({ field: 'updated_at', defaultValue: DataType.NOW })
   declare updatedAt?: Date;
+
+  @BelongsToMany(() => SuggestedTask, () => SuggestedTasksTags)
+  declare suggestedTasks: SuggestedTask[];
 }
