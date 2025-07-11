@@ -1,10 +1,11 @@
 import { BelongsToMany, Column, CreatedAt, DataType, Model, Table, UpdatedAt } from 'sequelize-typescript';
 import { SuggestedTasksTags } from './suggested-tasks-tags.model';
 import { SuggestedTask } from './suggested-task.model';
+import { CreateTagDto } from '../dto/create-tag.dto';
 
 
 @Table
-export class Tag extends Model<Tag> {
+export class Tag extends Model<Tag, CreateTagDto> {
   @Column({
     type: DataType.UUID,
     primaryKey: true,
