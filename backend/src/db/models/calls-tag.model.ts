@@ -1,6 +1,6 @@
 import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { Call } from './call.model';
-import { Tag } from '../tags/tag.model';
+import { Tag } from './tag.model';
 
 
 @Table
