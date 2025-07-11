@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { Task } from '../db/models/task.model';
 import { CreateTaskDto } from '../db/dto/create-task.dto';
@@ -14,7 +14,7 @@ export class TasksController {
   }
 
   @Get(':callId')
-  async findByCallId(callId: string): Promise<Task | null> {
+  async findByCallId(@Param('callId') callId: string): Promise<Task | null> {
     return await this.tasksService.findByCallId(callId);
   }
 
