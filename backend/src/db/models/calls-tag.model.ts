@@ -1,10 +1,10 @@
 import { Column, DataType, ForeignKey, Model, Table } from 'sequelize-typescript';
 import { Call } from './call.model';
-import { Task } from '../tasks/task.model';
+import { Tag } from './tag.model';
 
 
 @Table
-export class CallTask extends Model<CallTask> {
+export class CallTag extends Model<CallTag> {
   @Column({
     type: DataType.UUID,
     primaryKey: true,
@@ -13,10 +13,16 @@ export class CallTask extends Model<CallTask> {
   declare id: string;
 
   @ForeignKey(() => Call)
-  @Column
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
   declare callId: string;
 
-  @ForeignKey(() => Task)
-  @Column
-  declare taskId: string;
+  @ForeignKey(() => Tag)
+  @Column({
+    type: DataType.UUID,
+    allowNull: false,
+  })
+  declare tagId: string;
 }
