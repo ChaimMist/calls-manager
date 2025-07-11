@@ -1,11 +1,11 @@
-import { BelongsToMany, Column, CreatedAt, DataType, Model, Table, UpdatedAt } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, CreatedAt, UpdatedAt, BelongsToMany, } from 'sequelize-typescript';
 import { Tag } from '../tags/tag.model';
-import { CallTag } from './calls-tag.model';
-import { CallTask } from './calls-tasks.model';
-import { CreateCallDto } from './dto/create-call.dto';
+import { TaskTag } from './tasks-tags.model';
+import { Call } from '../calls/call.model';
+import { CallTask } from '../calls/calls-tasks.model';
 
 @Table
-export class Call extends Model<Call, CreateCallDto> {
+export class Task extends Model<Task> {
   @Column({
     type: DataType.UUID,
     primaryKey: true,
@@ -24,10 +24,9 @@ export class Call extends Model<Call, CreateCallDto> {
   @Column({ field: 'updated_at' })
   declare updatedAt: Date;
 
-  @BelongsToMany(()=> Tag, () => CallTag)
+  @BelongsToMany(() => Tag, () => TaskTag)
   tags: Tag[];
 
   @BelongsToMany(() => Call, () => CallTask)
-  tasks: Call[];
-
+  calls: Call[];
 }

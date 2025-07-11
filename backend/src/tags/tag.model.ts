@@ -11,7 +11,7 @@ export class Tag extends Model<Tag> {
   declare id: string;
 
   @Column
-  name: string;
+  declare name: string;
 
   @CreatedAt
   @Column({ field: 'created_at', defaultValue: DataType.NOW })
