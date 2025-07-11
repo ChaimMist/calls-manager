@@ -32,4 +32,12 @@ export class TasksService {
       throw new Error(`Error creating task: ${JSON.stringify(error)}`);
     }
   }
+
+  async deleteTask(id: string): Promise<void> {
+    try {
+      await this.taskModel.destroy({where: {id: id}});
+    } catch (error) {
+      throw new Error(`Error deleting task for id ${id}: ${JSON.stringify(error)}`);
+    }
+  }
 }
