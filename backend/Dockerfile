@@ -8,8 +8,4 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
-
-CMD ["npm", "start:dev"]
-
-ENTRYPOINT ["top", "-b"]
+CMD ["npm", "run", "start:dev"]

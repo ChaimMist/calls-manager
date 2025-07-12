@@ -17,9 +17,9 @@ function BaseLayout(): JSX.Element {
                 rtl={false}
                 pauseOnFocusLoss
                 pauseOnHover/>
-            <Box display={'flex'} flexDirection={'column'} gap={1} width={'100%'}>
+            <Box display={'flex'} flexDirection={'column'} gap={1} width={'100%'} height={'100dvh'}>
                 <Navbar/>
-                <Box p={2}>
+                <Box p={2} height={'calc(100dvh - 180px)'}>
                     <Outlet/>
                 </Box>
             </Box>

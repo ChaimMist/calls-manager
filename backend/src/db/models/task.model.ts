@@ -11,6 +11,7 @@ import {
 import { Call } from './call.model';
 import { SuggestedTask } from './suggested-task.model';
 import { CreateTaskDto } from '../dto/create-task.dto';
+import { TaskStatus } from '../../tasks/task-status.enum';
 
 @Table
 export class Task extends Model<Task, CreateTaskDto> {
@@ -34,6 +35,13 @@ export class Task extends Model<Task, CreateTaskDto> {
     allowNull: true,
   })
   declare originSuggestedTaskId?: string;
+
+  @Column({
+    type: DataType.ENUM('Open', 'In Progress', 'Completed'),
+    allowNull: false,
+    defaultValue: 'Open',
+  })
+  declare status: TaskStatus;
 
   @Column
   declare name: string;

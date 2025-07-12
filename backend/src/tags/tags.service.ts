@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { Tag } from '../db/models/tag.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { CreateTagDto } from '../db/dto/create-tag.dto';
@@ -9,9 +9,11 @@ export class TagsService {
 
   async findAll(): Promise<Tag[]> {
     try {
-      return await this.tagModel.findAll();
+      return await this.tagModel.findAll({
+        order: [['updatedAt', 'DESC']],
+      });
     } catch (error) {
-      throw new Error(`Error retrieving tags: ${JSON.stringify(error)}`);
+      throw new InternalServerErrorException(`Error retrieving tags: ${JSON.stringify(error)}`);
     }
   }
 
@@ -31,15 +33,20 @@ export class TagsService {
       }
       return await tag.update(updatedTag);
     } catch (error) {
-      throw new Error(`Error updating tag with id ${id}: ${JSON.stringify(error)}`);
+      throw new InternalServerErrorException(`Error updating tag with id ${id}: ${JSON.stringify(error)}`);
     }
   }
 
-  async deleteTag(id: string): Promise<void> {
+  async deleteTag(id: string): Promise<string> {
     try {
-      await this.tagModel.destroy({ where: { id } });
+      const tag: Tag | null = await this.tagModel.findByPk(id);
+      if (!tag) {
+        throw new NotFoundException(`Tag with id ${id} not found`);
+      }
+      await tag.destroy();
+      return id;
     } catch (error) {
-      throw new Error(`Error deleting tag with id ${id}: ${JSON.stringify(error)}`);
+      throw new error;
     }
   }
 }

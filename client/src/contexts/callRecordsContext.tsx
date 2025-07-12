@@ -1,113 +1,73 @@
-import {type Context, createContext, type ReactNode, useCallback, useContext, useState} from "react";
-import type {CallRecord} from "../models/callRecord.ts";
-import type {Tag} from "../models/tag.ts";
+import { type Context, createContext, type ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import type { CallRecord, CallRecordUpdateTagsDto } from '../models/callRecord.ts';
 import type {Task} from "../models/task.ts";
+import { useCallById, useCalls } from '../hooks/queryHooks/useCalls.ts';
+import { useCreateCall, useUpdateCallTags } from '../hooks/mutationHooks/useCallsMutations.ts';
+import { useCreateTask, useUpdateTask } from '../hooks/mutationHooks/useTaskMutations.ts';
+import type { SuggestedTask } from '../models/suggestedTask.ts';
+import type { Tag } from '../models/tag.ts';
 
 type CallRecordsProviderContextType = {
     selectedCallRecord: CallRecord | null;
     setSelectedCallRecord: (callRecord: CallRecord | null) => void;
-    editSelectedCallTags: (tags: Tag[]) => void;
-    editSelectedCallTasks: (tasks: Task) => void;
-    addSelectedCallTask: (task: Task) => void;
+    selectedCallRecordSuggestedTasks: SuggestedTask[];
+    selectedCallTasks: Task[];
+    updateCallTask: (tasks: Task) => void;
+    createCallTask: (task: Partial<Task>) => void;
+    updateCallTags: (call: CallRecordUpdateTagsDto) => void;
     calls: CallRecord[];
-    addCall: (call: CallRecord) => void;
+    createCall: (call: Partial<CallRecord>) => void;
 };
 
 const CallRecordsContext: Context<CallRecordsProviderContextType | undefined> = createContext<CallRecordsProviderContextType | undefined>(undefined);
 
 export function CallRecordsProvider({children}: { children: ReactNode }) {
-    const [selectedCallRecord, setSelectedCallRecord] = useState<CallRecord | null>(null);
-    const [calls, setCalls] = useState<CallRecord[]>([
-        {
-            id: '1',
-            name: 'Call 1',
-            updatedAt: '2023-10-01T12:00:00Z',
-            createdAt: '2023-10-01T12:00:00Z',
-            tags: [],
-            tasks: []
-        },
-        {
-            id: '2',
-            name: 'Call 2',
-            updatedAt: '2023-10-02T12:00:00Z',
-            createdAt: '2023-10-02T12:00:00Z',
-            tags: [],
-            tasks: []
-        },
-        {
-            id: '3',
-            name: 'Call 3',
-            updatedAt: '2023-10-03T12:00:00Z',
-            createdAt: '2023-10-03T12:00:00Z',
-            tags: [],
-            tasks: []
-        }
-    ]);
+    const [selectedCall, setSelectedCallRecord] = useState<CallRecord | null>(null);
+    const [selectedCallRecordSuggestedTasks, setSelectedCallRecordSuggestedTasks] = useState<SuggestedTask[]>([]);
+    const [selectedCallTasks, setSelectedCallTasks] = useState<Task[]>([]);
 
-    const addCall = (call: CallRecord): void => {
-        setCalls((prevCalls: CallRecord[]): CallRecord[] =>
-            [...prevCalls, call].sort((a: CallRecord, b: CallRecord): number =>
-                new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime()));
-    }
+    const {data: calls} = useCalls();
+    const {data: selectedCallRecord} = useCallById(selectedCall?.id);
+    const {mutateAsync: createCall} = useCreateCall();
+    const {mutateAsync: createCallTask} = useCreateTask();
+    const {mutateAsync: updateCallTask} = useUpdateTask();
+    const {mutateAsync: updateCallTags} = useUpdateCallTags();
 
-    const addSelectedCallTask = useCallback((task: Task): void => {
+  const getDistinctSuggestedTasks = useCallback((): SuggestedTask[] =>{
+    const suggestedTasks: SuggestedTask[] = selectedCallRecord?.tags.flatMap((tag: Tag): SuggestedTask[]=> {
+      return tag.suggestedTasks || [];
+    }) || [];
+
+    const distinctTasks: Record<string, SuggestedTask> = {};
+    suggestedTasks.forEach((suggestedTask: SuggestedTask): void => {
+      if (!distinctTasks[suggestedTask.id]) {
+        distinctTasks[suggestedTask.id] = suggestedTask;
+      }
+    });
+
+    return Object.values(distinctTasks);
+  }, [selectedCallRecord?.tags])
+
+
+  useEffect(() => {
         if (selectedCallRecord) {
-            setSelectedCallRecord({
-                ...selectedCallRecord,
-                tasks: [...selectedCallRecord.tasks, task]
-            });
-            setCalls((prevCalls: CallRecord[]): CallRecord[] =>
-                prevCalls.map((call: CallRecord): CallRecord =>
-                    call.id === selectedCallRecord.id ? {...call, tasks: [...call.tasks, task]} : call
-                )
-            );
+          setSelectedCallRecordSuggestedTasks(getDistinctSuggestedTasks());
+          setSelectedCallTasks(selectedCallRecord.tasks);
         }
-    }, [selectedCallRecord]);
+    }, [getDistinctSuggestedTasks, selectedCallRecord]);
 
-    const editSelectedCallTasks = useCallback((tasks: Task): void => {
-        if (selectedCallRecord) {
-            setSelectedCallRecord({
-                ...selectedCallRecord,
-                tasks: selectedCallRecord.tasks.map((task: Task): Task =>
-                    task.id === tasks.id ? {...task, ...tasks} : task
-                )
-            });
-            setCalls((prevCalls: CallRecord[]): CallRecord[] =>
-                prevCalls.map((call: CallRecord): CallRecord =>
-                    call.id === selectedCallRecord.id ? {
-                        ...call,
-                        tasks: call.tasks.map((task: Task): Task =>
-                            task.id === tasks.id ? {...task, ...tasks} : task
-                        )
-                    } : call
-                )
-            );
-        }
-    }, [selectedCallRecord]);
-
-    const editSelectedCallTags = useCallback((tags: Tag[]): void => {
-        if (selectedCallRecord) {
-            setSelectedCallRecord({
-                ...selectedCallRecord,
-                tags: tags
-            });
-            setCalls((prevCalls: CallRecord[]): CallRecord[] =>
-                prevCalls.map((call: CallRecord): CallRecord =>
-                    call.id === selectedCallRecord.id ? {...call, tags: tags} : call
-                )
-            );
-        }
-    }, [selectedCallRecord]);
 
     return (
         <CallRecordsContext.Provider value={{
             selectedCallRecord,
-            addSelectedCallTask,
+            createCall,
             setSelectedCallRecord,
+            selectedCallRecordSuggestedTasks,
+            selectedCallTasks,
             calls,
-            addCall,
-            editSelectedCallTags,
-            editSelectedCallTasks
+            updateCallTask,
+            updateCallTags,
+            createCallTask
         }}>
             {children}
         </CallRecordsContext.Provider>

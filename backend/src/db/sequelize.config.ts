@@ -8,7 +8,7 @@ import { CallTag } from './models/calls-tag.model';
 
 export const sequelizeConfig: SequelizeModuleOptions = {
   dialect: 'postgres',
-  host: 'localhost',
+  host: 'db',
   port: 5432,
   username: 'postgres',
   password: 'postgres',

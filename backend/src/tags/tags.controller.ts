@@ -19,9 +19,9 @@ export class TagsController {
   }
 
   @Delete(':id')
-  @HttpCode(204)
-  async deleteTag(@Param('id') id: string): Promise<void> {
-    await this.tagsService.deleteTag(id);
+  @HttpCode(200)
+  async deleteTag(@Param('id') id: string): Promise<string> {
+    return await this.tagsService.deleteTag(id);
   }
 
   @Put(':id')

@@ -1,9 +1,8 @@
 import {Box, Checkbox, FormControlLabel} from "@mui/material";
 import type {TagPopupItemProps} from "./tagPopupItemProps.ts";
+import { memo } from 'react';
 
-export default function TagPopupItem({tag, isSelected, onChange}: TagPopupItemProps) {
-
-
+export const TagPopupItem= memo(({tag, isSelected, onChange}: TagPopupItemProps) => {
     return (
         <Box display="flex" justifyContent="space-between" borderRadius={2}>
             <FormControlLabel
@@ -12,4 +11,9 @@ export default function TagPopupItem({tag, isSelected, onChange}: TagPopupItemPr
             />
         </Box>
     );
-}
+}, (prevProps, nextProps) => {
+  return prevProps.isSelected === nextProps.isSelected && prevProps.tag.id === nextProps.tag.id;
+});
+
+
+export default TagPopupItem;

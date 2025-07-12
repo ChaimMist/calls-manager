@@ -33,6 +33,18 @@ export class TasksService {
     }
   }
 
+  async updateTask(id: string, dto: CreateTaskDto): Promise<Task> {
+    try {
+      const task: Task | null = await this.taskModel.findByPk(id);
+      if (!task) {
+        throw new Error(`Task with id ${id} not found`);
+      }
+      return await task.update(dto);
+    } catch (error) {
+      throw new Error(`Error updating task for id ${id}: ${JSON.stringify(error)}`);
+    }
+  }
+
   async deleteTask(id: string): Promise<void> {
     try {
       await this.taskModel.destroy({where: {id: id}});

@@ -5,11 +5,13 @@ import { CreateCallDto } from '../db/dto/create-call.dto';
 import { Tag } from '../db/models/tag.model';
 import { Task } from '../db/models/task.model';
 import { SuggestedTask } from '../db/models/suggested-task.model';
+import { UpdateCallBody } from './update-call-body.interface';
 
 
 @Injectable()
 export class CallsService {
-  constructor(@InjectModel(Call) private callModel: typeof Call) {}
+  constructor(@InjectModel(Call) private callModel: typeof Call,
+              @InjectModel(Tag) private tagModel: typeof Tag) {}
 
   async findById(callId: string): Promise<Call | null> {
     try {
@@ -20,7 +22,7 @@ export class CallsService {
               { model: SuggestedTask, as: 'suggestedTasks', attributes: ['id', 'name'] }
             ]
           },
-          { model: Task, as: 'tasks', attributes: ['id', 'name', 'originSuggestedTaskId'] }
+          { model: Task, as: 'tasks', attributes: { exclude: [] } }
         ]});
     } catch (error) {
       throw new InternalServerErrorException(`Error retrieving call with id: ${callId}: ${JSON.stringify(error)}`);
@@ -48,6 +50,24 @@ export class CallsService {
       await this.callModel.destroy({where: {id: callId}});
     } catch (error) {
       throw new InternalServerErrorException(`Error deleting call with id: ${callId}`, error);
+    }
+  }
+
+  async updateCallTags(callId: string, updatedCall: UpdateCallBody): Promise<Call | null> {
+    try {
+      const call: Call | null = await this.callModel.findByPk(callId);
+      if (!call) {
+        return null;
+      }
+      const tags: Tag[] = await this.tagModel.findAll({
+        where: {
+          id: updatedCall.tagIds,
+        },
+      });
+      await call.$set('tags', tags);
+      return this.findById(callId);
+    } catch (error) {
+      throw new InternalServerErrorException(`Error updating call with id: ${callId}`, error);
     }
   }
 

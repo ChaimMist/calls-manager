@@ -2,10 +2,9 @@ import {Box, Chip, FormControl, InputLabel, MenuItem, Select, type SelectChangeE
 import type {TaskItemProps} from "./taskItemProps.ts";
 import {useCallRecords} from "../../contexts/callRecordsContext.tsx";
 import type {TaskStatus} from "../../models/task.ts";
-import {toast} from "react-toastify";
 
 export default function TaskItem({task}: TaskItemProps) {
-    const {editSelectedCallTasks} = useCallRecords();
+    const {updateCallTask} = useCallRecords();
 
     const getStatusColor = (status: string) => {
         switch (status) {
@@ -23,12 +22,11 @@ export default function TaskItem({task}: TaskItemProps) {
 
     const handleStatusChange = (event: SelectChangeEvent<TaskStatus>): void => {
         const newStatus: TaskStatus = event.target.value;
-        editSelectedCallTasks({
+        updateCallTask({
             ...task,
             status: newStatus,
             updatedAt: new Date().toISOString()
         });
-        toast.success(`Task status updated to ${newStatus}`);
     }
 
     return (

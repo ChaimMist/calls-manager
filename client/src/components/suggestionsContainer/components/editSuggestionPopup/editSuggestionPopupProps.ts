@@ -1,6 +1,6 @@
-import type {SuggestionI} from "../../../../models/suggestion.ts";
+import type { SuggestedTask } from '../../../../models/suggestedTask.ts';
 
 
 export interface EditSuggestionPopupProps {
-    suggestion: SuggestionI;
+    suggestion: SuggestedTask;
 }

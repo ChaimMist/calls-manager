@@ -7,7 +7,7 @@ export default function CallsBody() {
     const {selectedCallRecord, setSelectedCallRecord, calls} = useCallRecords();
 
     return (
-        <Box display={"flex"} flexDirection={"column"} gap={1}>
+        <Box p={1} display={"flex"} overflow={'auto'} height={'100%'} flexDirection={"column"} gap={2}>
             {
                 calls.map((call: CallRecord) => {
                     return (

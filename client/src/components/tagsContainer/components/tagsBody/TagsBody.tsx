@@ -2,28 +2,16 @@ import type { Tag } from "../../../../models/tag.ts";
 import {Box} from "@mui/material";
 import type {JSX} from "react";
 import TagItem from "../../../tagItem/TagItem.tsx";
+import { useTagsContext } from '../../../../contexts/tagsContext.tsx';
 
 export default function TagsBody(): JSX.Element {
-    const tags: Tag[] = [
-        {
-            name: 'urgent',
-            createdAt: '2023-10-01T12:00:00Z',
-            updatedAt: '2023-10-01T12:00:00Z',
-            id: '1'
-        },
-        {
-            id: '2',
-            name: 'feature',
-            createdAt: '2023-10-02T12:00:00Z',
-            updatedAt: '2023-10-02T12:00:00Z'
-        }
-    ]
+   const {tags} = useTagsContext();
 
     return (
-        <Box flex={1} display={'flex'} flexDirection={'column'} borderRadius={3} gap={2} bgcolor={'background.paper'} p={2}>
+        <Box flex={1} boxShadow={2} overflow={'auto'} display={'flex'} flexDirection={'column'} borderRadius={3} gap={2} bgcolor={'background.paper'} p={2}>
             {
                 tags.map((tag: Tag) => {
-                    return <TagItem key={tag.name} tag={tag}/>
+                    return <TagItem key={tag.id} tag={tag}/>
                 })
             }
         </Box>

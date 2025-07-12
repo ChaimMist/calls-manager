@@ -2,26 +2,32 @@ import type {EditSuggestionPopupProps} from "./editSuggestionPopupProps.ts";
 import {Box, Button, FormControl, TextField, Typography} from "@mui/material";
 import React, {useCallback} from "react";
 import {toast} from "react-toastify";
+import {
+    useDeleteSuggestedTask,
+    useUpdateSuggestedTask,
+} from '../../../../hooks/mutationHooks/useSuggestedTasksMutations.ts';
 
 export default function EditSuggestionPopup({suggestion}: EditSuggestionPopupProps) {
+    const {mutateAsync: updateSuggestedTask} = useUpdateSuggestedTask();
+    const {mutateAsync: deleteSuggestedTask} = useDeleteSuggestedTask();
 
     const handleRenameSuggestion = useCallback((event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         const newName = new FormData(event.currentTarget).get('suggestionName') as string;
-        console.log(`Renaming suggestion from ${suggestion.name} to: ${newName}`);
         if (!newName || newName.trim() === '') {
             toast.error('Suggestion name cannot be empty');
         } else {
             event.currentTarget.reset();
-            toast.success(`Suggestion renamed to ${newName} successfully`);
-            console.log(`Renaming suggestion from ${suggestion.name} to: ${newName}`);
+            updateSuggestedTask({
+                id: suggestion.id,
+                name: newName
+            })
         }
-    }, [suggestion.name]);
+    }, [suggestion.id, updateSuggestedTask]);
 
-    const handleDeleteSuggestion = useCallback((): void => {
-        console.log(`Deleting suggestion: ${suggestion.name}`);
-        toast.success(`Suggestion ${suggestion.name} deleted successfully`);
-    }, [suggestion.name]);
+    const handleDeleteSuggestion = (): void => {
+        deleteSuggestedTask(suggestion.id)
+    };
 
     return (
         <Box bgcolor={'background.paper'}
