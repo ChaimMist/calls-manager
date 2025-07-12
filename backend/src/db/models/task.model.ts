@@ -33,8 +33,9 @@ export class Task extends Model<Task, CreateTaskDto> {
   @Column({
     type: DataType.UUID,
     allowNull: true,
+    onDelete: 'CASCADE',
   })
-  declare originSuggestedTaskId?: string;
+  declare originSuggestedTaskId: string;
 
   @Column({
     type: DataType.ENUM('Open', 'In Progress', 'Completed'),
@@ -56,4 +57,7 @@ export class Task extends Model<Task, CreateTaskDto> {
 
   @BelongsTo(() => Call)
   call: Call;
+
+  @BelongsTo(() => SuggestedTask)
+  originSuggestedTask: SuggestedTask;
 }
