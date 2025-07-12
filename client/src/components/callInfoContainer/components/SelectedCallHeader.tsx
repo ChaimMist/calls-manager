@@ -2,13 +2,19 @@ import {useCallRecords} from "../../../contexts/callRecordsContext.tsx";
 import {Box, Typography} from "@mui/material";
 import TagsDisplay from "../../tagsDisplay/TagsDisplay.tsx";
 import type {Tag} from "../../../models/tag.ts";
-import {toast} from "react-toastify";
+import type { CallRecordUpdateTagsDto } from '../../../models/callRecord.ts';
 
 export default function SelectedCallHeader() {
-    const {selectedCallRecord, editSelectedCallTags} = useCallRecords();
-    const handleSaveTags = (tags: Tag[]) => {
-        editSelectedCallTags(tags);
-        toast.success('Tags updated successfully');
+    const {selectedCallRecord, updateCallTags} = useCallRecords();
+
+    const handleSaveTags = (tags: Tag[]): void => {
+      const tagIds: string[] = tags.map((tag: Tag): string => tag.id);
+      if (!selectedCallRecord) return;
+      const updatedCall: CallRecordUpdateTagsDto = {
+        id: selectedCallRecord.id,
+        tagIds: tagIds
+      }
+      updateCallTags(updatedCall)
     };
 
     return (
@@ -17,11 +23,11 @@ export default function SelectedCallHeader() {
                 {selectedCallRecord?.name || 'Please select a call'}
             </Typography>
             {!!selectedCallRecord &&
-                <Box display={'flex'} flexDirection={"row"} mt={4} alignItems={'center'} gap={2}>
+                <Box display={'flex'} flexDirection={"row"} borderRadius={2} overflow={'auto'} p={2} boxShadow={2} mt={4} alignItems={'center'} gap={2}>
                     <Typography variant={'h6'}>
                         Tags
                     </Typography>
-                    <TagsDisplay tags={selectedCallRecord.tags} onSaveTags={handleSaveTags} isEditable={true}/>
+                    <TagsDisplay displayedTags={selectedCallRecord.tags} onSaveTags={handleSaveTags} isEditable={true}/>
                 </Box>
             }
         </Box>

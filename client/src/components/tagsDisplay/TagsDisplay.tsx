@@ -4,17 +4,23 @@ import CustomPopover from "../CustomPopover/CustomPopover.tsx";
 import AddIcon from "@mui/icons-material/Add";
 import TagsPopup from "../tagsPopup/TagsPopup.tsx";
 import type {TagsDisplayProps} from "./tagsDisplayProps.ts";
+import { useTagsContext } from '../../contexts/tagsContext.tsx';
 
+export default function TagsDisplay({displayedTags, onSaveTags, isEditable}: TagsDisplayProps) {
+    const {tags} = useTagsContext()
 
-export default function TagsDisplay({tags, onSaveTags, isEditable}: TagsDisplayProps) {
     return (
         <Box display={'flex'} flexDirection={'row'} gap={1} flexWrap={'wrap'} alignItems={'center'}>
-            {tags.map((tag: Tag) => (
-                <Chip key={tag.id} variant={'outlined'} color={'primary'} label={tag.name}/>
-            ))}
+            {tags.map((tag: Tag) => {
+                if (displayedTags.some((displayedTag: Tag) => displayedTag.id === tag.id)) {
+                    return (
+                        <Chip key={tag.id} variant={'outlined'} color={'primary'} label={tag.name}/>
+                    )
+                }
+            })}
             {isEditable && (
                 <CustomPopover id={'tagsDisplayEditPopup'} icon={<AddIcon/>}>
-                    <TagsPopup onSaveTags={onSaveTags} selectedTags={tags}/>
+                    <TagsPopup onSaveTags={onSaveTags} selectedTags={displayedTags}/>
                 </CustomPopover>
             )}
         </Box>

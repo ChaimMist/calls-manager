@@ -7,7 +7,7 @@ import {CallRecordsProvider} from "../../contexts/callRecordsContext.tsx";
 function UserPage(): JSX.Element {
     return (
         <Grid container size={12} justifyContent="center" alignItems="stretch" spacing={2} width={"100%"}
-              height={"750px"}>
+              height={"100%"}>
             <CallRecordsProvider>
                 <Grid size={{xs: 12, sm: 12, md: 4, lg: 4, xl: 4}} height={'100%'}>
                     <CallsContainer/>

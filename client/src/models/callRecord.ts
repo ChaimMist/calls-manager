@@ -9,3 +9,8 @@ export interface CallRecord {
     tags: Tag[];
     tasks: Task[]
 }
+
+export interface CallRecordUpdateTagsDto {
+    id: string;
+    tagIds?: string[];
+}

@@ -14,7 +14,8 @@ export class SuggestedTasksService {
   async findAll(): Promise<SuggestedTask[]> {
     try {
       return this.suggestedTask.findAll({
-        include: [{ model: Tag, as: 'tags', through: { attributes: [] }} ],
+        order: [['updatedAt', 'DESC']],
+        include: [{ model: Tag, as: 'tags', through: { attributes: [] }}],
       });
     } catch (error) {
       throw new  InternalServerErrorException(`Error retrieving suggested tasks: ${JSON.stringify(error)}`);
@@ -23,7 +24,6 @@ export class SuggestedTasksService {
 
   async create(createSuggestedTaskBody: CreateSuggestedTaskBody): Promise<SuggestedTask> {
     try {
-
       const suggestedTask: SuggestedTask = await this.suggestedTask.create({ name: createSuggestedTaskBody.name });
       const tags: Tag[] = await this.tagModel.findAll({
         where: {
@@ -38,11 +38,16 @@ export class SuggestedTasksService {
     }
   }
 
-  async delete(id: string): Promise<void> {
+  async delete(id: string): Promise<string> {
     try {
-      await this.suggestedTask.destroy({ where: { id } });
+      const suggestedTask: SuggestedTask | null = await this.suggestedTask.findByPk(id);
+      if (!suggestedTask) {
+        throw new InternalServerErrorException(`Suggested task with id ${id} not found`);
+      }
+      await suggestedTask.destroy();
+      return id;
     } catch (error) {
-      throw new InternalServerErrorException(`Error deleting suggested task with id ${id}: ${JSON.stringify(error)}`);
+      throw error;
     }
   }
 

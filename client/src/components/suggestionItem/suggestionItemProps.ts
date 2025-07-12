@@ -1,6 +1,6 @@
-import type {SuggestionI} from "../../models/suggestion.ts";
+import type { SuggestedTask } from '../../models/suggestedTask.ts';
 
 
 export interface SuggestionItemProps {
-    suggestion: SuggestionI;
+    suggestion: SuggestedTask;
 }

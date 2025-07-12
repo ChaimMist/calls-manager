@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 import {useCallRecords} from "../../../contexts/callRecordsContext.tsx";
 
 export default function CallsHeader() {
-    const {addCall} = useCallRecords();
+    const {createCall} = useCallRecords();
 
     const handleSave = (event: React.FormEvent<HTMLFormElement>) => {
         const callName: string = new FormData(event.currentTarget).get('dialogInput') as string;
@@ -12,14 +12,8 @@ export default function CallsHeader() {
             toast.error('Call name is required');
             return;
         } else {
-            toast.success(`Call "${callName}" created successfully`);
-            addCall({
-                id: new Date().getTime().toString(),
-                name: callName,
-                createdAt: new Date().toISOString(),
-                updatedAt: new Date().toISOString(),
-                tasks: [],
-                tags: []
+            createCall({
+                name: callName
             });
         }
     };

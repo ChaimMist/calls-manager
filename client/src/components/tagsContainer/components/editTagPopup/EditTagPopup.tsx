@@ -2,26 +2,31 @@ import {Box, Button, FormControl, TextField, Typography} from "@mui/material";
 import React, {type JSX, useCallback} from "react";
 import {toast} from "react-toastify";
 import type {EditTagPopupProps} from "./editTagPopupProps.ts";
+import { useDeleteTag, useUpdateTag } from '../../../../hooks/mutationHooks/useTagsMutations.ts';
+import type { Tag } from '../../../../models/tag.ts';
 
 export default function EditTagPopup({tag}: EditTagPopupProps): JSX.Element {
+    const {mutateAsync: updateTag} = useUpdateTag();
+    const {mutateAsync: deleteTag} = useDeleteTag();
 
     const handleRenameTag = useCallback((event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
         const newName = new FormData(event.currentTarget).get('tagName') as string;
-        console.log(`Renaming tag from ${tag.name} to: ${newName}`);
         if (!newName || newName.trim() === '') {
             toast.error('Tag name cannot be empty');
         } else {
             event.currentTarget.reset();
-            toast.success(`Tag renamed to ${newName} successfully`);
-            console.log(`Renaming tag from ${tag.name} to: ${newName}`);
+            const updatedTag: Partial<Tag> = {
+                id: tag.id,
+                name: newName
+            }
+            updateTag(updatedTag);
         }
-    }, [tag.name]);
+    }, [tag, updateTag]);
 
-    const handleDeleteTag = useCallback((): void => {
-        console.log(`Deleting tag: ${tag.name}`);
-        toast.success(`Tag ${tag.name} deleted successfully`);
-    }, [tag.name]);
+    const handleDeleteTag = (): void => {
+        deleteTag(tag.id);
+    };
 
     return (
         <Box bgcolor={'background.paper'}

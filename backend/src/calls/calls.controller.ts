@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpCode, Param, Post, Put } from '@nestjs/common';
 import { AppService } from '../app.service';
 import { CallsService } from './calls.service';
 import { Call } from '../db/models/call.model';
 import { CreateCallDto } from '../db/dto/create-call.dto';
+import { UpdateCallBody } from './update-call-body.interface';
 
 @Controller({
   path: 'calls',
@@ -31,5 +32,9 @@ export class CallsController {
     await this.callsService.deleteCall(id);
   }
 
-
+  @Put('/tags/:id')
+  @HttpCode(200)
+  async updateCallTags(@Param('id') id: string, @Body() updatedCall: UpdateCallBody): Promise<Call | null> {
+    return await this.callsService.updateCallTags(id, updatedCall);
+  }
 }
