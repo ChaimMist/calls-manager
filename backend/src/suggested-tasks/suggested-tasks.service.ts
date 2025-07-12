@@ -4,12 +4,13 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CreateSuggestedTaskBody } from './create-suggested-task-body.interface';
 import { Tag } from '../db/models/tag.model';
 import { CreateSuggestedTaskDto } from '../db/dto/create-suggesnted-task.dto';
+import { Task } from '../db/models/task.model';
 
 @Injectable()
 export class SuggestedTasksService {
   constructor(@InjectModel(SuggestedTask) private suggestedTask: typeof SuggestedTask,
-              @InjectModel(Tag) private tagModel: typeof Tag) {
-  }
+              @InjectModel(Tag) private tagModel: typeof Tag,
+              @InjectModel(Task) private taskModel: typeof Task) {}
 
   async findAll(): Promise<SuggestedTask[]> {
     try {
@@ -57,6 +58,10 @@ export class SuggestedTasksService {
       if (!suggestedTask) {
         return null;
       }
+      await this.taskModel.update(
+        { name: updatedTask.name }, {
+        where: { originSuggestedTaskId: suggestedTask.id }
+      });
       suggestedTask.name = updatedTask.name;
       await suggestedTask.save();
       return suggestedTask;

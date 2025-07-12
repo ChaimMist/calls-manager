@@ -18,5 +18,11 @@ export const sequelizeConfig: SequelizeModuleOptions = {
   database: process.env.DB_NAME || 'calls-manager',
   models: [Call, Tag, Task, SuggestedTask, SuggestedTasksTags, CallTag],
   autoLoadModels: true,
-  synchronize: process.env.IS_PROD !== 'true',
+  synchronize: process.env.ENABLE_DB_SYNC === 'true',
+  dialectOptions: {
+    ssl: process.env.IS_PROD === 'true' ? {
+      require: true,
+      rejectUnauthorized: false
+    } : false,
+  },
 };
