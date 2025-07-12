@@ -16,6 +16,11 @@ export default function SuggestionCreationContainer(): JSX.Element {
         if (!taskName || taskName.trim() === '') {
             toast.error('Task name is required');
         }
+        if (displayedTags.length === 0) {
+            toast.error('At least one tag is required');
+            return;
+        }
+
         const tagIds: string[] = displayedTags.map((tag: Tag): string => tag.id);
         const taskDto: SuggestedTaskDto = {
             name: taskName,
@@ -25,10 +30,6 @@ export default function SuggestionCreationContainer(): JSX.Element {
     }, [createSuggestedTask, displayedTags]);
 
     const handleSaveTags = useCallback((selectedTags: Tag[]): void => {
-        if (selectedTags.length === 0) {
-            toast.error('Please select at least one tag');
-            return;
-        }
         setDisplayedTags(selectedTags);
         toast.success('Tags saved successfully');
     }, []);
