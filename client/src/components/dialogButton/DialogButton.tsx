@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import {useState} from "react";
 
-export default function DialogButton({dialogTitle, buttonText, onSave, dialogDescription}: DialogButtonProps){
+export default function DialogButton({dialogTitle, buttonText, onSave, dialogDescription, isLoading=false}: DialogButtonProps){
     const [dialogOpen, setDialogOpen] = useState(false);
 
     const handleDialogOpen: () => void = (): void => {
@@ -32,7 +32,7 @@ export default function DialogButton({dialogTitle, buttonText, onSave, dialogDes
 
     return (
         <>
-            <Button variant={'contained'} onClick={handleDialogOpen}>
+            <Button loading={isLoading} variant={'contained'} onClick={handleDialogOpen}>
                 {buttonText || "New"}
             </Button>
             <Dialog open={dialogOpen} fullWidth>

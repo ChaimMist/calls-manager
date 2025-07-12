@@ -4,7 +4,7 @@ import {toast} from "react-toastify";
 import {useCallRecords} from "../../../contexts/callRecordsContext.tsx";
 
 export default function CallsHeader() {
-    const {createCall} = useCallRecords();
+    const {createCall, createCallPending} = useCallRecords();
 
     const handleSave = (event: React.FormEvent<HTMLFormElement>) => {
         const callName: string = new FormData(event.currentTarget).get('dialogInput') as string;
@@ -23,7 +23,7 @@ export default function CallsHeader() {
             <Typography variant={'h5'}>
                 Calls
             </Typography>
-            <DialogButton dialogDescription={'Please enter a relevant call name'} onSave={handleSave}
+            <DialogButton isLoading={createCallPending} dialogDescription={'Please enter a relevant call name'} onSave={handleSave}
                           dialogTitle={'New Call'} buttonText={'New Call'}/>
         </Box>
     )

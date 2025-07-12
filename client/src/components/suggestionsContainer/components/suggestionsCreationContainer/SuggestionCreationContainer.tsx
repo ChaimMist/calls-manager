@@ -8,7 +8,7 @@ import type { SuggestedTaskDto } from '../../../../models/suggestedTask.ts';
 
 export default function SuggestionCreationContainer(): JSX.Element {
     const [displayedTags, setDisplayedTags] = useState<Tag[]>([]);
-    const {mutateAsync: createSuggestedTask} = useCreateSuggestedTask();
+    const {mutateAsync: createSuggestedTask, isPending} = useCreateSuggestedTask();
 
     const handleSubmit = useCallback((event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
@@ -40,7 +40,7 @@ export default function SuggestionCreationContainer(): JSX.Element {
                 <Box display={'flex'} flexDirection={'row'} gap={2}>
                     <TextField required name={'taskName'} placeholder={'Task name'} label={"Task name"}
                                variant={"outlined"} fullWidth/>
-                    <Button type={'submit'} variant={'contained'} color={'primary'}>
+                    <Button loading={isPending} type={'submit'} variant={'contained'} color={'primary'}>
                         Create
                     </Button>
                 </Box>

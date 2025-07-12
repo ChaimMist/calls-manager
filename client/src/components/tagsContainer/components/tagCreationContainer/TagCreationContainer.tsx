@@ -3,7 +3,7 @@ import {toast} from "react-toastify";
 import { useCreateTag } from '../../../../hooks/mutationHooks/useTagsMutations.ts';
 
 export default function TagCreationContainer() {
-    const {mutateAsync: createTag} = useCreateTag();
+    const {mutateAsync: createTag, isPending} = useCreateTag();
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
         event.preventDefault();
@@ -22,7 +22,7 @@ export default function TagCreationContainer() {
                 <Box display={'flex'} flexDirection={'row'} gap={2}>
                     <TextField required name={'tagName'} placeholder={'Tag name'} label={"Tag name"}
                                variant={"outlined"} fullWidth/>
-                    <Button type={'submit'} variant={'contained'} color={'primary'}>
+                    <Button loading={isPending} type={'submit'} variant={'contained'} color={'primary'}>
                         Create
                     </Button>
                 </Box>

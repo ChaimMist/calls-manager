@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import DialogButton from '../dialogButton/DialogButton.tsx';
 
 export default function CallRecordTasks() {
-  const { selectedCallRecord, createCallTask } = useCallRecords();
+  const { selectedCallRecord, createCallTask, createTaskPending } = useCallRecords();
 
   const handleSaveTask = (event: React.FormEvent<HTMLFormElement>): void => {
     const formData = new FormData(event.currentTarget);
@@ -27,6 +27,7 @@ export default function CallRecordTasks() {
           Tasks
         </Typography>
         <DialogButton dialogTitle={'New task'}
+                      isLoading={createTaskPending}
                       dialogDescription={'Create a new task for this call.'}
                       buttonText={'New Task'}
                       onSave={handleSaveTask} />

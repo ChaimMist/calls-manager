@@ -14,9 +14,11 @@ type CallRecordsProviderContextType = {
     selectedCallTasks: Task[];
     updateCallTask: (tasks: Task) => void;
     createCallTask: (task: Partial<Task>) => void;
+    createTaskPending: boolean;
     updateCallTags: (call: CallRecordUpdateTagsDto) => void;
     calls: CallRecord[];
     createCall: (call: Partial<CallRecord>) => void;
+    createCallPending: boolean;
 };
 
 const CallRecordsContext: Context<CallRecordsProviderContextType | undefined> = createContext<CallRecordsProviderContextType | undefined>(undefined);
@@ -28,8 +30,8 @@ export function CallRecordsProvider({children}: { children: ReactNode }) {
 
     const {data: calls} = useCalls();
     const {data: selectedCallRecord} = useCallById(selectedCall?.id);
-    const {mutateAsync: createCall} = useCreateCall();
-    const {mutateAsync: createCallTask} = useCreateTask();
+    const {mutateAsync: createCall, isPending: createCallPending} = useCreateCall();
+    const {mutateAsync: createCallTask, isPending: createTaskPending} = useCreateTask();
     const {mutateAsync: updateCallTask} = useUpdateTask();
     const {mutateAsync: updateCallTags} = useUpdateCallTags();
 
@@ -61,13 +63,15 @@ export function CallRecordsProvider({children}: { children: ReactNode }) {
         <CallRecordsContext.Provider value={{
             selectedCallRecord,
             createCall,
+            createCallPending,
             setSelectedCallRecord,
             selectedCallRecordSuggestedTasks,
             selectedCallTasks,
             calls,
             updateCallTask,
             updateCallTags,
-            createCallTask
+            createCallTask,
+            createTaskPending
         }}>
             {children}
         </CallRecordsContext.Provider>
